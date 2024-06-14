@@ -9,6 +9,6 @@ app = Flask(__name__)
 def index():
     return 'Hello, Flaskbook!'
 
-@app.route('/hello', methods=['GET', 'POST'], endpoint='hello-endpoint')
-def hello():
-    return 'Hello, World!'
+@app.route('/hello/<name>', methods=['GET', 'POST'], endpoint='hello-endpoint')
+def hello(name): # URLパラメータのnameを受け取る
+    return f'Hello, {name}!'
