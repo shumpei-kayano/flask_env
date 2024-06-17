@@ -1,4 +1,6 @@
 from email_validator import validate_email, EmailNotValidError
+import os
+from flask_mail import Mail, Message
 from flask import (
     Flask,
     current_app,
@@ -14,6 +16,17 @@ from flask import (
 app = Flask(__name__)
 # SECRET_KEYを追加する
 app.config['SECRET_KEY'] = '2AZSMss3p5QPbcY2hBsJ'
+
+# Mailクラスのコンフィグを追加する
+app.config['MAIL_SERVER'] = os.environ.get('MAIL_SERVER')
+app.config['MAIL_PORT'] = os.environ.get('MAIL_PORT')
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+app.config['MAIL_USE_TLS'] = os.environ.get('MAIL_USE_TLS')
+app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_DEFAULT_SENDER')
+
+# flask-mail拡張を登録する
+mail = Mail(app)
 
 # URLと実行する関数をマッピングする
 @app.route('/')
@@ -67,9 +80,18 @@ def contact_complete():
             return redirect(url_for('contact'))
         
         # メールを送る（最後に実装）
+        send_mail(email,"問い合わせありがとうございました", "contact_mail", username=username, description=description)
         
         # 自分自身にリダイレクトして、GETアクセスする
         flash('問い合わせ内容はメールにて送信しました。問い合わせありがとうございました。')
         return redirect(url_for('contact_complete'))
     # GETアクセスの場合は完了ページを表示する
     return render_template('contact_complete.html')
+
+# send_mail関数を作成する
+def send_mail(to, subject, template, **kwargs):
+    # メールを送信する
+    msg = Message(subject, recipients=[to])
+    msg.body = render_template(f'{template}.txt', **kwargs)
+    msg.html = render_template(f'{template}.html', **kwargs)
+    mail.send(msg)

@@ -1,0 +1,6 @@
+Gmailの２段階認証設定
+https://myaccount.google.com/signinoptions/two-step-verification/enroll-welcome
+
+アプリ用のパスワード取得
+https://security.google.com/settings/security/apppasswords
+⇛rslj tyxb thhw rihb
