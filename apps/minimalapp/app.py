@@ -1,6 +1,8 @@
 from email_validator import validate_email, EmailNotValidError
 import os
 from flask_mail import Mail, Message
+import logging # 追記
+from flask_debugtoolbar import DebugToolbarExtension # 追記
 from flask import (
     Flask,
     current_app,
@@ -16,6 +18,15 @@ from flask import (
 app = Flask(__name__)
 # SECRET_KEYを追加する
 app.config['SECRET_KEY'] = '2AZSMss3p5QPbcY2hBsJ'
+app.config['DEBUG'] = True
+
+# ログレベルを設定する
+app.logger.setLevel(logging.DEBUG)
+
+# リダイレクトを中断しないようにする
+app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+# デバッグツールバーを有効にする
+toolbar = DebugToolbarExtension(app)
 
 # Mailクラスのコンフィグを追加する
 app.config['MAIL_SERVER'] = os.environ.get('MAIL_SERVER')
