@@ -1,10 +1,13 @@
-from pathlib import Path # 追加
+from pathlib import Path
 from flask import Flask
-from flask_migrate import Migrate # 追加
-from flask_sqlalchemy import SQLAlchemy # 追加
+from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
+from flask_wtf.csrf import CSRFProtect
 
 # SQLAlchemyインスタンス生成
 db = SQLAlchemy()
+
+csrf = CSRFProtect()
 
 # create_app関数を作成する
 def create_app():
@@ -13,8 +16,10 @@ def create_app():
     # アプリのコンフィグ設定をする
     app.config.from_mapping(
         SECRET_KEY='2AZSMss3p5QPbcY2hBj',
-        SQLALCHEMY_DATABASE_URI=f"sqlite:///{Path(__file__).parent / 'local.sqlite'}",
-        SQLALCHEMY_TRACK_MODIFICATIONS=False
+        SQLALCHEMY_DATABASE_URI=f"sqlite:///{Path(__file__).parent.parent / 'local.sqlite'}",
+        SQLALCHEMY_TRACK_MODIFICATIONS=False,
+        WTF_CSRF_SECRET_KEY='AuwzyszU5sugKN7KZs6f',
+        SQLALCHEMY_ECHO=True,
     )
     
     # SQLAlchemyとアプリを連携する
@@ -22,6 +27,7 @@ def create_app():
     # Migrateとアプリを連携する
     Migrate(app, db)
     
+    csrf.init_app(app)
     # crudパッケージからviewsをインポートする
     from apps.crud import views as crud_views
     
