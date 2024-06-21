@@ -16,6 +16,7 @@ crud = Blueprint(
 def index():
     return render_template('crud/index.html')
 
+# ユーザー新規登録画面
 @crud.route('/users/new', methods=['GET', 'POST'])
 def create_user():
     # UserFormをインスタンス化する
@@ -33,3 +34,10 @@ def create_user():
         db.session.commit()
         return redirect(url_for('crud.users'))
     return render_template('crud/create.html', form=form)
+
+# ユーザー一覧画面
+@crud.route('/users')
+def users():
+    # ユーザー一覧を取得する
+    users = User.query.all() # Userテーブルの全てのレコードを取得
+    return render_template('crud/index.html', users=users) # users.htmlにusersを渡す
