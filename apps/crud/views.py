@@ -61,3 +61,13 @@ def edit_user(user_id):
     
     # GETの場合は編集画面を表示する
     return render_template('crud/edit.html', user=user, form=form)
+
+# ユーザー削除画面
+@crud.route('/users/<user_id>/delete', methods=['POST'])
+def delete_user(user_id):
+    # Userモデルを利用してユーザーを取得する
+    user = User.query.filter_by(id=user_id).first()
+    # ユーザーを削除する
+    db.session.delete(user)
+    db.session.commit()
+    return redirect(url_for('crud.users')) # ユーザー一覧画面へリダイレクトする
