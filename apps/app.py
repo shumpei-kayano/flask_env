@@ -18,7 +18,7 @@ def create_app():
     config_key = os.getenv('FLASK_CONFIG', 'local')
     # config_keyにマッチする環境のコンフィグクラスを読み込む
     app.config.from_object(config[config_key])
-    
+       
     # SQLAlchemyとアプリを連携する
     db.init_app(app)
     # Migrateとアプリを連携する
@@ -27,8 +27,12 @@ def create_app():
     csrf.init_app(app)
     # crudパッケージからviewsをインポートする
     from apps.crud import views as crud_views
+    # authパッケージからviewsをインポートする
+    from apps.auth import views as auth_views
     
     # register_blueprintメソッドを使いviewsのcrudをアプリへ登録する
     app.register_blueprint(crud_views.crud, url_prefix='/crud')
+    # register_blueprintメソッドを使いviewsのauthをアプリへ登録する
+    app.register_blueprint(auth_views.auth, url_prefix='/auth')
     
     return app
