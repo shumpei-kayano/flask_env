@@ -1,4 +1,4 @@
-{% extends "auth.html" %}
+{% extends "auth/base.html" %}
 {% block title %}ユーザー新規登録{% endblock %}
 
 {% block content %}
@@ -6,6 +6,7 @@
     {% for message in get_flashed_messages() %}
     <p style="color: red;">{{ message }}</p>
     {% endfor %}
+    {{ form.csrf_token }}
     <p>
         {{ form.username.label }}
         {{ form.username(size=30, placeholder="ユーザー名") }}

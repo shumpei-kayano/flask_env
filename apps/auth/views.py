@@ -1,5 +1,5 @@
 from apps.app import db
-from apps.auth.forms import SignupForm
+from apps.auth.forms import SignUpForm
 from apps.crud.models import User
 from flask import Blueprint, render_template, flash, url_for, redirect, request
 from flask_login import login_user
@@ -20,7 +20,7 @@ def index():
 @auth.route('/signup', methods=['GET', 'POST'])
 def signup():
     # SignupFormをインスタンス化する
-    form = SignupForm()
+    form = SignUpForm()
     if form.validate_on_submit():
         user = User(
             username=form.username.data,
@@ -41,6 +41,6 @@ def signup():
         # GETパラメータにnextキーが存在し、値がない場合はユーザーの一覧ページへ
         next_ = request.args.get('next')
         if next_ is None or not next_.startswith('/'):
-            next_ = url_for('crud.index')
+            next_ = url_for('crud.users')
         return redirect(next_)
     return render_template('auth/signup.html', form=form)
