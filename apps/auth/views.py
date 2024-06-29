@@ -1,5 +1,5 @@
 from apps.app import db
-from apps.auth.forms import SignUpForm
+from apps.auth.forms import SignUpForm, LoginForm
 from apps.crud.models import User
 from flask import Blueprint, render_template, flash, url_for, redirect, request
 from flask_login import login_user
@@ -17,6 +17,7 @@ auth = Blueprint(
 def index():
     return render_template('auth/index.html')
 
+# サインアップ用のエンドポイント
 @auth.route('/signup', methods=['GET', 'POST'])
 def signup():
     # SignupFormをインスタンス化する
@@ -44,3 +45,18 @@ def signup():
             next_ = url_for('crud.users')
         return redirect(next_)
     return render_template('auth/signup.html', form=form)
+
+# ログイン用のエンドポイント
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm() # LoginFormをインスタンス化する
+    if form.validate_on_submit():
+        # メールアドレスからユーザーを取得する
+        user = User.query.filter_by(email=form.email.data).first()
+        # ユーザーが存在し、パスワードが一致する場合はログインを許可する
+        if user is not None or user.verify_password(form.password.data):
+            login_user(user) # ユーザー情報をセッションに格納する
+            return redirect(url_for('crud.users'))
+        # ログイン失敗メッセージを設定する
+        flash('メールアドレスかパスワードが不正です')
+    return render_template('auth/login.html', form=form)
