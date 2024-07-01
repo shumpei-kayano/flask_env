@@ -40,10 +40,14 @@ def create_app():
     from apps.crud import views as crud_views
     # authパッケージからviewsをインポートする
     from apps.auth import views as auth_views
+    # detectorパッケージからviewsをインポートする
+    from apps.detector import views as dt_views
     
     # register_blueprintメソッドを使いviewsのcrudをアプリへ登録する
     app.register_blueprint(crud_views.crud, url_prefix='/crud')
     # register_blueprintメソッドを使いviewsのauthをアプリへ登録する
     app.register_blueprint(auth_views.auth, url_prefix='/auth')
+    # register_blueprintメソッドを使いviewsのdtをアプリへ登録する
+    app.register_blueprint(dt_views.dt)
     
     return app
