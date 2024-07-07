@@ -56,7 +56,7 @@ def login():
         # ユーザーが存在し、パスワードが一致する場合はログインを許可する
         if user is not None or user.verify_password(form.password.data):
             login_user(user) # ユーザー情報をセッションに格納する
-            return redirect(url_for('dt.index'))
+            return redirect(url_for('detector.index'))
         # ログイン失敗メッセージを設定する
         flash('メールアドレスかパスワードが不正です')
     return render_template('auth/login.html', form=form)
