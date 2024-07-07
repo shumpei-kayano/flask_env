@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 
 from apps.config import config
+import os
 
 db = SQLAlchemy()
 csrf = CSRFProtect()
@@ -18,7 +19,9 @@ login_manager.login_message = ""
 
 
 # create_app関数を作成する
-def create_app(config_key):
+def create_app():
+    # 環境変数から設定キーを取得する。デフォルトは'local'
+    config_key = os.getenv('FLASK_CONFIG', 'local')
     # Flaskインスタンス生成
     app = Flask(__name__)
     app.config.from_object(config[config_key])
