@@ -61,5 +61,5 @@ def upload_image():
         db.session.add(user_image)
         db.session.commit()
 
-        return redirect(url_for("dt.index"))
+        return redirect(url_for("detector.index"))
     return render_template("detector/upload.html", form=form)
