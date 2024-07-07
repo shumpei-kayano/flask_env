@@ -10,7 +10,7 @@ from apps.app import db
 from apps.crud.models import User
 
 # UploadImageFormをimportする
-from apps.detector.forms import DeleteForm, DetectorForm, UploadImageForm
+from apps.detector.forms import DetectorForm, UploadImageForm
 from apps.detector.models import UserImage, UserImageTag
 from flask import (
     Blueprint,
@@ -55,7 +55,7 @@ def index():
     # 物体検知フォームをインスタンス化する
     detector_form = DetectorForm()
     # DeleteFormをインスタンス化する
-    delete_form = DeleteForm()
+    # delete_form = DeleteForm()
 
     return render_template(
         "detector/index.html",
@@ -65,7 +65,7 @@ def index():
         # 物体検知フォームをテンプレートに渡す
         detector_form=detector_form,
         # 画像削除フォームをテンプレートに渡す
-        delete_form=delete_form,
+        # delete_form=delete_form,
     )
 
 
@@ -232,22 +232,22 @@ def detect(image_id):
     return redirect(url_for("detector.index"))
 
 
-@dt.route("/images/delete/<string:image_id>", methods=["POST"])
-@login_required
-def delete_image(image_id):
-    try:
-        # user_image_tagsテーブルからレコードを削除する
-        db.session.query(UserImageTag).filter(
-            UserImageTag.user_image_id == image_id
-        ).delete()
+# @dt.route("/images/delete/<string:image_id>", methods=["POST"])
+# @login_required
+# def delete_image(image_id):
+#     try:
+#         # user_image_tagsテーブルからレコードを削除する
+#         db.session.query(UserImageTag).filter(
+#             UserImageTag.user_image_id == image_id
+#         ).delete()
 
-        # user_imageテーブルからレコードを削除する
-        db.session.query(UserImage).filter(UserImage.id == image_id).delete()
+#         # user_imageテーブルからレコードを削除する
+#         db.session.query(UserImage).filter(UserImage.id == image_id).delete()
 
-        db.session.commit()
-    except Exception as e:
-        flash("画像削除処理でエラーが発生しました。")
-        # エラーログ出力
-        current_app.logger.error(e)
-        db.session.rollback()
-    return redirect(url_for("detector.index"))
+#         db.session.commit()
+#     except Exception as e:
+#         flash("画像削除処理でエラーが発生しました。")
+#         # エラーログ出力
+#         current_app.logger.error(e)
+#         db.session.rollback()
+#     return redirect(url_for("detector.index"))
