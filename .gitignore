@@ -4,3 +4,8 @@
 /Scripts
 __pycache__
 .gitignore
+/Library
+/share
+migrations/
+*.sqlite
+apps/detector/model.pt
