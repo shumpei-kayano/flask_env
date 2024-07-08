@@ -12,7 +12,7 @@ from apps.detector.models import UserImage, UserImageTag
 def fixture_app():
     # セットアップ処理
     # テスト用のコンフィグを使うために引数にtestingを指定する
-    app = create_app("testing")
+    app = create_app()
 
     # データベースを利用するための宣言をする
     app.app_context().push()
